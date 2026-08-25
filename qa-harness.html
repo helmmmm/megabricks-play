@@ -1,0 +1,30 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Megabricks responsive QA</title>
+<style>
+  html, body { width: 100%; height: 100%; margin: 0; overflow: hidden; background: #1a1d1b; }
+  body { display: grid; place-items: center; font: 14px monospace; color: #9dffa2; }
+  #shell { position: relative; border: 1px solid #496c4b; background: #000; overflow: hidden; }
+  iframe { position: absolute; inset: 0; border: 0; transform-origin: top left; }
+</style>
+<div id="shell"><iframe id="game" allow="autoplay"></iframe></div>
+<script>
+  const mode = new URLSearchParams(location.search).get('mode') || 'compact';
+  const profiles = {
+    wide: { width: 1280, height: 720, scale: 1 },
+    compact: { width: 960, height: 540, scale: 1 },
+    portrait: { width: 390, height: 844, scale: 1 },
+  };
+  const profile = profiles[mode] || profiles.compact;
+  if (mode === 'portrait') document.body.style.placeItems = 'start center';
+  const frame = document.querySelector('#game');
+  const shell = document.querySelector('#shell');
+  frame.width = profile.width;
+  frame.height = profile.height;
+  frame.style.width = `${profile.width}px`;
+  frame.style.height = `${profile.height}px`;
+  frame.style.transform = `scale(${profile.scale})`;
+  shell.style.width = `${profile.width * profile.scale}px`;
+  shell.style.height = `${profile.height * profile.scale}px`;
+  frame.src = `/?qa=harness-${mode}`;
+</script>
